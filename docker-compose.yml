@@ -1,0 +1,74 @@
+services:
+
+  redis:
+    image: redis
+
+    ports:
+      - "6379:6379"
+
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+
+    container_name: api_server
+
+    ports:
+      - "8001:8001"
+
+    environment:
+      GPU_TASK_TIMEOUT_SECONDS: "30"
+      RQ_GPU_JOB_TIMEOUT_SECONDS: "180"
+
+      HF_HOME: /root/.cache/huggingface
+      HF_TOKEN: ${HF_TOKEN:-}
+      HUGGING_FACE_HUB_TOKEN: ${HF_TOKEN:-}
+
+    volumes:
+      - hf_cache:/root/.cache/huggingface
+
+    depends_on:
+      - redis
+
+
+  gpu_worker_1:
+    build: .
+
+    gpus: all
+
+    command: rq worker gpu0 --url redis://redis:6379 --worker-class rq.worker.SimpleWorker
+
+    environment:
+      HF_HOME: /root/.cache/huggingface
+      HF_TOKEN: ${HF_TOKEN:-}
+      HUGGING_FACE_HUB_TOKEN: ${HF_TOKEN:-}
+
+    volumes:
+      - hf_cache:/root/.cache/huggingface
+
+    depends_on:
+      - redis
+
+
+  gpu_worker_2:
+    build: .
+
+    gpus: all
+
+    command: rq worker gpu1 --url redis://redis:6379 --worker-class rq.worker.SimpleWorker
+
+    environment:
+      HF_HOME: /root/.cache/huggingface
+      HF_TOKEN: ${HF_TOKEN:-}
+      HUGGING_FACE_HUB_TOKEN: ${HF_TOKEN:-}
+
+    volumes:
+      - hf_cache:/root/.cache/huggingface
+
+    depends_on:
+      - redis
+
+
+volumes:
+  hf_cache:

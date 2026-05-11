@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+redis
+rq
+torch
+transformers
+sentence-transformers
+faiss-cpu
+aiohttp
+matplotlib
