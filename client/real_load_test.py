@@ -63,10 +63,10 @@ async def process_request(session, i):
 
     try:
 
-        # 🚀 submit
+       
         job_id = await submit_request(session, i)
 
-        # 🚀 wait until finished
+        
         ok, source = await wait_for_result(session, job_id)
 
         end = time.time()

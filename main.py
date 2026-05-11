@@ -39,17 +39,17 @@ async def main():
 
     end_total = time.time()
 
-    # 📊 رسم الجراف
+    
     plt.figure()
     plt.plot(latencies)
     plt.title("Latency for 1000 Requests")
     plt.xlabel("Request Number")
     plt.ylabel("Latency (seconds)")
 
-    # حفظ الجراف
+    
     plt.savefig("results/latency_graph.png")
 
-    # 📈 حساب throughput
+    
     total_time = end_total - start_total
     throughput = len(latencies) / total_time
 

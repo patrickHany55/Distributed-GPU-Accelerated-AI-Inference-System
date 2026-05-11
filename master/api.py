@@ -125,7 +125,7 @@ def send_request(data: dict):
 
         print(f"📊 GPU Queue Size: {queue_size}")
 
-        # 🔥 Queue overload fallback
+        
         USE_CPU_FALLBACK = queue_size > 300
 
         if USE_CPU_FALLBACK:
@@ -200,7 +200,7 @@ def get_result(job_id: str):
 
             source = "gpu"
 
-            # 🔥 Detect CPU queue jobs
+            
             if job.origin == "cpu":
                 source = "cpu_stub"
 
@@ -260,7 +260,7 @@ def get_result(job_id: str):
 
         query = job.args[0] if job.args else ""
 
-        # 🔥 Runtime timeout fallback
+        
         if gpu_running_seconds > GPU_TASK_TIMEOUT_SECONDS:
 
             _enqueue_cpu_fallback(

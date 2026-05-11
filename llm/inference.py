@@ -7,7 +7,6 @@ tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
 
 model = AutoModelForSeq2SeqLM.from_pretrained(MODEL_NAME)
 
-# 🔥 GPU CHECK
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 print(f"\n🔥 USING DEVICE: {device}\n")
@@ -23,7 +22,6 @@ def generate_response(prompt):
         truncation=True
     )
 
-    # 🔥 move tensors to GPU
     inputs = {k: v.to(device) for k, v in inputs.items()}
 
     with torch.no_grad():

@@ -13,7 +13,7 @@ class Scheduler:
             port=int(os.environ.get("REDIS_PORT", "6379")),
         )
 
-        # 🔥 GPU Queues
+        #  GPU Queues
         self.workers = [
 
             Queue(
@@ -27,7 +27,7 @@ class Scheduler:
             )
         ]
 
-        # 🖥 CPU Fallback Queue
+        #  CPU Fallback Queue
         self.cpu_queue = Queue(
             "cpu",
             connection=self.redis_conn
@@ -35,7 +35,7 @@ class Scheduler:
 
         self.index = 0
 
-    # 🔄 Round Robin GPU Scheduler
+    #  Round Robin GPU Scheduler
     def get_next_worker(self):
 
         worker = self.workers[self.index]
@@ -46,7 +46,7 @@ class Scheduler:
 
         return worker
 
-    # 📊 Queue Monitoring
+    #  Queue Monitoring
     def get_queue_size(self):
 
         total = 0
